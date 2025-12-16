@@ -163,6 +163,7 @@ export const useTock0: (
     localStorageSettings.maxMessageCount;
   const localStoragePrefix = localStorageSettings.prefix;
   const disableSse = disableSseArg ?? networkSettings.disableSse;
+  const pingCheckInterval = networkSettings.pingCheckInterval;
   const { clearMessages }: UseLocalTools = useLocalTools(localStorageEnabled);
   const handledResponses = useRef<Record<string, number>>({});
   const afterInit = useRef(() => {});
@@ -171,7 +172,7 @@ export const useTock0: (
       afterInit.current = resolve;
     }),
   );
-  const sseSource = useRef(new TockEventSource());
+  const sseSource = useRef(new TockEventSource(pingCheckInterval));
 
   const startLoading: () => void = useCallback(() => {
     dispatch({
